@@ -109,7 +109,7 @@ class SeqModel(Model):
             encoder_inputs, decoder_inputs, target_weights = self.model.get_batch(
                 {bucket_id: [(token_ids, [])]}, bucket_id)
             # Get output logits for the sentence.
-            _, _, output_logits = model.step(self.sess, encoder_inputs, decoder_inputs,
+            _, _, output_logits = self.model.step(self.sess, encoder_inputs, decoder_inputs,
                                              target_weights, bucket_id, True)
             # This is a greedy decoder - outputs are just argmaxes of output_logits.
             outputs = [int(np.argmax(logit, axis=1)) for logit in output_logits]
