@@ -20,7 +20,7 @@ def main():
         print("'Hi I'm Eigen. Let's talk'")
         while True:
             user_response = input()
-            model_response = model.feed(user_response.lower())
+            model_response = model.feed([user_response.lower()])
             print(model_response)
 if __name__ == "__main__":
     main()

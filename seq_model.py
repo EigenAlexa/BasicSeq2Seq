@@ -99,7 +99,7 @@ class SeqModel(Model):
                 sys.stdout.flush()
                 
 
-    def feed(self, features, labels):
+    def feed(self, features, labels=None):
         response = []
         for sentence in features:
             token_ids = data_utils.sentence_to_token_ids(tf.compat.as_bytes(sentence), self.data_source.vocabA)
