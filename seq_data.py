@@ -1,4 +1,4 @@
-from datasource import DataSource
+from nest.datasource import DataSource
 from pymongo import MongoClient
 import data_utils
 import os

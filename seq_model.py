@@ -1,5 +1,5 @@
-from model import Model
-from utils import hyperdefault
+from nest.model import Model
+from nest.utils import hyperdefault
 import seq2seq_model as s2smodel
 import tensorflow as tf
 from seq_data import SeqData
