@@ -112,8 +112,8 @@ class SeqModel(Model):
             _, _, output_logits = self.model.step(self.sess, encoder_inputs, decoder_inputs,
                                              target_weights, bucket_id, True)
             # This is a greedy decoder - outputs are just argmaxes of output_logits.
-            print(output_logits)
-            outputs = [int(np.argmax(logit, axis=1)) for logit in output_logits]
+            print(output_logits[0].shape)
+            outputs = [int(np.argmax(logit, axis=0)) for logit in output_logits[0]]
             # If there is an EOS symbol in outputs, cut them at that point.
             if data_utils.EOS_ID in outputs:
               outputs = outputs[:outputs.index(data_utils.EOS_ID)]
