@@ -53,7 +53,7 @@ class SeqModel(Model):
                 dtype=tf.float32)
             print("initializing variables")
             self.sess.run(tf.global_variables_initializer())
-            tf.train.write_graph(self.sess.graph_def, self.save_dir, 'graph.pbtxt') 
+            tf.train.write_graph(self.sess.graph_def, self.save_dir, 'graph.pbtxt', False) 
         print("finished constructing")
 
     def train_batch(self, X, y):
