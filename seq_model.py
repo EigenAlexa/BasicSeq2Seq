@@ -8,6 +8,7 @@ import numpy as np
 import time
 import sys
 import math
+import os
 
 class SeqModel(Model):
     def __init__(self, sess, hyperparameters = {}, save_dir='./run/'):
@@ -31,7 +32,7 @@ class SeqModel(Model):
 
     def construct(self, load=False):
         if load:
-            with gfile.FastGFile(os.path.join(save_dir, 'graph.pbtxt'), 'rb') as f:
+            with tf.gfile.FastGFile(os.path.join(self.save_dir, 'graph.pbtxt'), 'rb') as f:
                 graph_def = tf.GraphDef()
                 graph_def.ParseFromString(f.read())
                 tf.import_graph_def(graph_def, name='')
