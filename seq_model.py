@@ -30,30 +30,30 @@ class SeqModel(Model):
 
     def construct(self, load=False):
         print("constructing model")
-        if load:
-            with tf.gfile.FastGFile(os.path.join(self.save_dir, 'graph.pbtxt'), 'rb') as f:
-                graph_def = tf.GraphDef()
-                graph_def.ParseFromString(f.read())
-                tf.import_graph_def(graph_def, name='')
-                
-        else:
-            self.input_vocab_size = len(self.data_source.vocabA)
-            self.output_vocab_size = len(self.data_source.vocabB)
-            self.model = s2smodel.Seq2SeqModel( \
-                self.input_vocab_size,
-                self.output_vocab_size,
-                self.data_source.buckets,
-                self.layer_size,
-                self.num_layers,
-                self.max_gradient_norm,
-                self.batch_size,
-                self.learning_rate,
-                self.learning_rate_decay_factor,
-                forward_only = False,
-                dtype=tf.float32)
-            print("initializing variables")
-            self.sess.run(tf.global_variables_initializer())
-            tf.train.write_graph(self.sess.graph_def, self.save_dir, 'graph.pbtxt', False) 
+#        if load:
+#            with tf.gfile.FastGFile(os.path.join(self.save_dir, 'graph.pbtxt'), 'rb') as f:
+#                graph_def = tf.GraphDef()
+#                graph_def.ParseFromString(f.read())
+#                tf.import_graph_def(graph_def, name='')
+#                
+#        else:
+        self.input_vocab_size = len(self.data_source.vocabA)
+        self.output_vocab_size = len(self.data_source.vocabB)
+        self.model = s2smodel.Seq2SeqModel( \
+            self.input_vocab_size,
+            self.output_vocab_size,
+            self.data_source.buckets,
+            self.layer_size,
+            self.num_layers,
+            self.max_gradient_norm,
+            self.batch_size,
+            self.learning_rate,
+            self.learning_rate_decay_factor,
+            forward_only = False,
+            dtype=tf.float32)
+        print("initializing variables")
+        self.sess.run(tf.global_variables_initializer())
+        tf.train.write_graph(self.sess.graph_def, self.save_dir, 'graph.pbtxt', False) 
         print("finished constructing")
 
     def train_batch(self, X, y):
@@ -126,7 +126,8 @@ class SeqModel(Model):
             # If there is an EOS symbol in outputs, cut them at that point.
             if data_utils.EOS_ID in outputs:
               outputs = outputs[:outputs.index(data_utils.EOS_ID)]
-            response.append(" ".join([tf.compat.as_str(rev_out_vocab[output]) for output in outputs]))
+            response.append(" ".join([tf.compat.as_str(self.data_source.vocabB_rev[output]) for output in outputs]))
+        return response
     def load(self):
         super().load()
         self.construct(load=True) 
