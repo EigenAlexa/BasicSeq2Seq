@@ -16,8 +16,6 @@ class SeqModel(Model):
         self.model_name = "Seq2Seq"
         self.data_source = SeqData(save_dir)
         self.setup_hyperparameters()
-        print("constructing model")
-        print("finished constructing")
         self.steps_per_checkpoint = 200
 
     def setup_hyperparameters(self):
@@ -31,6 +29,7 @@ class SeqModel(Model):
         self.steps_per_checkpoint = hyperdefault("steps_per_checkpoint", 200, self.hyperparameters)
 
     def construct(self, load=False):
+        print("constructing model")
         if load:
             with tf.gfile.FastGFile(os.path.join(self.save_dir, 'graph.pbtxt'), 'rb') as f:
                 graph_def = tf.GraphDef()
@@ -54,7 +53,8 @@ class SeqModel(Model):
                 dtype=tf.float32)
             print("initializing variables")
             self.sess.run(tf.global_variables_initializer())
-            tf.train.write_graph(self.sess.graph_def, save_dir, 'graph.pbtxt') 
+            tf.train.write_graph(self.sess.graph_def, self.save_dir, 'graph.pbtxt') 
+        print("finished constructing")
 
     def train_batch(self, X, y):
         super().train_batch(X, y)
